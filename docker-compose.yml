@@ -1,0 +1,38 @@
+cass1:
+  environment:
+    CASS_NAME: test_cass1_1
+    CASS_SEED: test_cass1_1
+  ports:
+  - 9042:9042/tcp
+  - 9160:9160/tcp
+  labels:
+    io.rancher.scheduler.affinity:host_label: name=docker-demo-3
+  image: cassandra1.2.14
+  hostname: cass1
+cass2:
+  environment:
+    CASS_SEED: test_cass1_1
+    CASS_NAME: test_cass2_1
+  image: cassandra1.2.14
+  labels:
+      io.rancher.scheduler.affinity:host_label: name=docker-demo-3
+  links:
+  - cass1
+  cass3:
+  environment:
+    CASS_SEED: test_cass1_1
+    CASS_NAME: test_cass3_1
+  labels:
+      io.rancher.scheduler.affinity:host_label: name=docker-demo-2
+  image: cassandra1.2.14
+  links:
+  - cass1
+cass4:
+  environment:
+    CASS_SEED: test_cass1_1
+    CASS_NAME: test_cass4_1
+  labels:
+      io.rancher.scheduler.affinity:host_label: name=docker-demo-2
+  image: cassandra1.2.14
+  links:
+  - cass1 
